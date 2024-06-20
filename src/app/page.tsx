@@ -10,6 +10,10 @@ const caesarCipher = (str: string, shift: number): string => {
   });
 };
 
+const caesarDecipher = (str: string, shift: number): string => {
+  return caesarCipher(str, 26 - (shift % 26));
+};
+
 const vigenereCipher = (text: string, key: string): string => {
   let result = '';
   for (let i = 0, j = 0; i < text.length; i++) {
@@ -19,6 +23,23 @@ const vigenereCipher = (text: string, key: string): string => {
       j++;
     } else if (c >= 97 && c <= 122) {
       result += String.fromCharCode((c - 97 + key.charCodeAt(j % key.length) - 97) % 26 + 97);
+      j++;
+    } else {
+      result += text.charAt(i);
+    }
+  }
+  return result;
+};
+
+const vigenereDecipher = (text: string, key: string): string => {
+  let result = '';
+  for (let i = 0, j = 0; i < text.length; i++) {
+    const c = text.charCodeAt(i);
+    if (c >= 65 && c <= 90) {
+      result += String.fromCharCode((c - 65 - (key.charCodeAt(j % key.length) - 65) + 26) % 26 + 65);
+      j++;
+    } else if (c >= 97 && c <= 122) {
+      result += String.fromCharCode((c - 97 - (key.charCodeAt(j % key.length) - 97) + 26) % 26 + 97);
       j++;
     } else {
       result += text.charAt(i);
@@ -38,8 +59,12 @@ const frequencyAnalysis = (text: string): Record<string, number> => {
 const Home: React.FC = () => {
   const [caesarText, setCaesarText] = useState<string>('');
   const [caesarShift, setCaesarShift] = useState<number>(3);
+  const [caesarDecipherText, setCaesarDecipherText] = useState<string>('');
+
   const [vigenereText, setVigenereText] = useState<string>('');
   const [vigenereKey, setVigenereKey] = useState<string>('KEY');
+  const [vigenereDecipherText, setVigenereDecipherText] = useState<string>('');
+
   const [frequencyText, setFrequencyText] = useState<string>('');
 
   return (
@@ -60,6 +85,15 @@ const Home: React.FC = () => {
         className={styles.input}
       />
       <p>Texto Cifrado: {caesarCipher(caesarText, caesarShift)}</p>
+      <h2>Decifrar Cifra de César</h2>
+      <input
+        type="text"
+        value={caesarDecipherText}
+        onChange={(e: ChangeEvent<HTMLInputElement>) => setCaesarDecipherText(e.target.value)}
+        placeholder="Digite o texto cifrado"
+        className={styles.input}
+      />
+      <p>Texto Decifrado: {caesarDecipher(caesarDecipherText, caesarShift)}</p>
 
       <h1 className={styles.title}>Cifra de Vigenère</h1>
       <input
@@ -77,6 +111,15 @@ const Home: React.FC = () => {
         className={styles.input}
       />
       <p>Texto Cifrado: {vigenereCipher(vigenereText, vigenereKey)}</p>
+      <h2>Decifrar Cifra de Vigenère</h2>
+      <input
+        type="text"
+        value={vigenereDecipherText}
+        onChange={(e: ChangeEvent<HTMLInputElement>) => setVigenereDecipherText(e.target.value)}
+        placeholder="Digite o texto cifrado"
+        className={styles.input}
+      />
+      <p>Texto Decifrado: {vigenereDecipher(vigenereDecipherText, vigenereKey)}</p>
 
       <h1 className={styles.title}>Análise de Frequência</h1>
       <textarea
