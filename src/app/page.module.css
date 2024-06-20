@@ -1,0 +1,29 @@
+.main {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.title {
+  margin-top: 20px;
+}
+
+.input,
+.textarea {
+  display: block;
+  margin: 10px 0;
+  padding: 10px;
+  font-size: 16px;
+  width: 100%;
+  max-width: 600px;
+}
+
+.textarea {
+  height: 100px;
+}
+
+.pre {
+  background: red;
+  padding: 10px;
+  max-width: 600px;
+  overflow-x: auto;
+}
